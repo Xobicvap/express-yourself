@@ -1,21 +1,13 @@
 from operators import *
 from var_repo import VarRepo
+from node import Node
 import unittest
-
-class MockNode:
-
-  def __init__(self, value):
-    self.value = value
-
-  def evaluate(self):
-    return self.value
-
 
 class OperatorTest(unittest.TestCase):
 
   def testAssignOperatorEvaluate(self):
-    n1 = MockNode("A")
-    n2 = MockNode(1)
+    n1 = Node("A")
+    n2 = Node(1)
 
     ao = AssignOperator()
     vr = VarRepo()
@@ -24,7 +16,7 @@ class OperatorTest(unittest.TestCase):
     self.assertEqual({"A": 1}, vr.repo)
 
   def testAddOperatorEvaluate(self):
-    n1 = MockNode(1)
+    n1 = Node(1)
     
     ao = AddOperator()
     vr = VarRepo()
@@ -34,7 +26,7 @@ class OperatorTest(unittest.TestCase):
     self.assertEqual({"_last": 2}, vr.repo)
 
   def testSubtractOperatorEvaluate(self):
-    n1 = MockNode(1)
+    n1 = Node(1)
     
     ao = SubtractOperator()
     vr = VarRepo()
@@ -44,8 +36,8 @@ class OperatorTest(unittest.TestCase):
     self.assertEqual({"_last": 0}, vr.repo)
 
   def testMultiplyOperatorEvaluate(self):
-    n1 = MockNode(2)
-    n2 = MockNode(2)
+    n1 = Node(2)
+    n2 = Node(2)
     
     ao = MultiplyOperator()
     vr = VarRepo()
@@ -55,8 +47,8 @@ class OperatorTest(unittest.TestCase):
     self.assertEqual({"_last": 4}, vr.repo)
 
   def testDivisionOperatorEvaluate(self):
-    n1 = MockNode(4)
-    n2 = MockNode(2)
+    n1 = Node(4)
+    n2 = Node(2)
     
     ao = DivisionOperator()
     vr = VarRepo()
@@ -65,6 +57,3 @@ class OperatorTest(unittest.TestCase):
     self.assertEqual(2, result)
     self.assertEqual({"_last": 2}, vr.repo)
 
-
-if __name__ == "__main__":
-  unittest.main()
