@@ -1,1 +1,2 @@
-*.pyc
+/express/*.pyc
+/express/tests/*.pyc
