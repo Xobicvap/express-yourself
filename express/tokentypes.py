@@ -1,0 +1,16 @@
+
+class TokenType:
+
+  LEFT_PAREN = 0
+  RIGHT_PAREN = 1
+  ASSIGNMENT = 2
+  PLUS = 3
+  MINUS = 4
+  ASTERISK = 5
+  SLASH = 6
+  CARET = 7
+  RANDRANGE = 8
+  VARIABLE = 9
+  NUMERIC = 10
+
+

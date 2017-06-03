@@ -1,0 +1,7 @@
+class Precedence:
+  ASSIGNMENT = 1
+  RANDRANGE = 2
+  DIFFERENCE = 3
+  SUM = 4
+  DIVISION = 5
+  PRODUCT = 6
