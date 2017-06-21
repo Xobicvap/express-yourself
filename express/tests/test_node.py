@@ -3,34 +3,33 @@ from var_repo import VarRepo
 from variable import Variable
 import unittest
 
+class TestEnvir:
+  def __init__(self, var_repo = None):
+    if var_repo is not None:
+      self.var_repo = var_repo
+  def varRepo(self):
+    return self.var_repo or VarRepo()
+
 class NodeTest(unittest.TestCase):
 
   def testGetValueGetsSimpleValue(self):
     n1 = Node("1")
-    vr = VarRepo()
-    v = n1.getValue(vr)
+    te = TestEnvir()
+    v = n1.getValue(te)
     self.assertEqual('1', v)
 
   def testGetValueGetsVariableValue(self):
     n1 = Node(Variable("Abcdefg"))
     vr = VarRepo()
     vr.setVar("Abcdefg", 1)
-    v = n1.getValue(vr)
+    te = TestEnvir(vr)
+    v = n1.getValue(te)
     self.assertEqual(1, v)
-
+  
   def testEvaluateNonOperatorNodeAsVariable(self):
     n1 = Node(Variable("Abcdefg"))
     vr = VarRepo()
     vr.setVar("Abcdefg", 1)
-    v = n1.evaluate(vr)
+    te = TestEnvir(vr)
+    v = n1.evaluate(te)
     self.assertEqual(1, v)
-
-  def testEvaluateNonOperatorNodeAsVariable(self):
-    n1 = Node("abcd")
-    n2 = Node(5.0)
-    vr = VarRepo()
-    v1 = n1.evaluate(vr)
-    v2 = n2.evaluate(vr)
-    self.assertEqual("abcd", v1)
-    self.assertEqual(5.0, v2)
-

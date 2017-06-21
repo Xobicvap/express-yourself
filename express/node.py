@@ -1,4 +1,3 @@
-from operator_map import operator_map, get_operator
 
 class Node:
   def __init__(self, value, left=None, right=None):
@@ -6,17 +5,16 @@ class Node:
     self.right=right
     self.value=value
 
-  def getValue(self, var_repo):
+  def getValue(self, envir):
     if hasattr(self.value, 'value'):
-      return var_repo.repo[self.value.value]
+      return envir.varRepo().repo[self.value.value]
     return self.value
 
-  def evaluate(self, var_repo):
+  def evaluate(self, envir):
     if self.left is not None or self.right is not None:
-      oper = get_operator(self.value)
-      return oper.evaluate(self.left, self.right, var_repo)
+      return envir.operator(self.value).evaluate(self.left, self.right, envir)
     else:
-      return self.getValue(var_repo)
+      return self.getValue(envir)
 
 def print_tree(tree, level=0):
   if tree is None:

@@ -2,14 +2,16 @@ from parselets import PrefixParselet, InfixParselet
 
 class Parser:
 
-  def __init__(self, tokens):
-    if type(tokens) is not list:
-      raise Exception("Must provide list of tokens to parser")
-    self.tokens = tokens
-    self.token_iter = iter(tokens)
+  def __init__(self):
     self.prefix_parselets = {}
     self.infix_parselets = {}
     self.reads = []
+
+  def token_define(self, tokens):
+    if type(tokens) is not list:
+      raise Exception("Must provide list of tokens to parser")
+    self.tokens = tokens
+    self.token_iter = iter(tokens)    
 
   def register(self, tokentype, parselet):
     # code smell- don't use isinstance, maybe ensure types

@@ -1,19 +1,22 @@
-from random import randrange
+from random import randrange, choice
 
 class Operator:
-  def process(self, var_repo, result, name=None):
-    var_repo.setVar(str(name), result)
+  def process(self, envir, result, name=None):
+    envir.varRepo().setVar(str(name), result)
 
-  def evaluate(self, left, right, var_repo):
-    lval = left.evaluate(var_repo)
-    rval = right.evaluate(var_repo)
-    result = self.fn(lval, rval)
-    self.process(var_repo, result, "_last")
+  def evaluate(self, left, right, envir):
+    lval = left.evaluate(envir)
+    if right is not None:
+      rval = right.evaluate(envir)
+      result = self.fn(lval, rval)
+    else:
+      result = self.fn(lval)
+    self.process(envir, result, "_last")
     return result
 
 class AssignOperator(Operator):
-  def evaluate(self, left, right, var_repo):
-    self.process(var_repo, right.evaluate(var_repo), left.value)
+  def evaluate(self, left, right, envir):
+    self.process(envir, right.evaluate(envir), left.value)
     return None
 
 class AddOperator(Operator):
@@ -36,4 +39,6 @@ class RandrangeOperator(Operator):
   def __init__(self):
     self.fn = lambda x,y: randrange(x, y+1)
 
-
+class RandchoiceOperator(Operator):
+  def __init__(self):
+    self.fn = lambda x: choice(x)
