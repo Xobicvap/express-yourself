@@ -4,26 +4,61 @@ from precedence import Precedence
 import parseutils
 
 class PrefixParselet:
+  """ Base class for prefix tokens, i.e. those that begin a line or expression.
+  """
   def parse(self, parser, token):
+    """ Not implemented in the base class.
+    """
     raise Exception("Not implemented")
 
 class InfixParselet:
+  """ Base class for infix tokens, i.e. those within a line or expression.
+  """
   def parse(self, parser, left, token):
+    """ Not implemented in the base class.
+    """
     raise Exception("Not implemented")
 
 class PostfixParselet:
+  """ Base class for postfix tokens.
+  """
   def parse(self, parser, left, token):
+    """ Not implemented in the base class.
+    """
     raise Exception("Not implemented")
 
 class VariableParselet(PrefixParselet):
+  """ Parselet for parsing variables. 
+      
+      This doesn't *assign* variables. That's operators you're thinking of.
+      This is more like a variable declaration.
+  """
   def parse(self, parser, token):
+    """ Transforms the token value into a node containing a Variable.
+
+        Arguments:
+          parser (Parser): parser instance, not used here
+          token (str): token instance
+    """
     return Node(Variable(token.getValue()))
 
 class AssignParselet(InfixParselet):
+  """ Assigns the value on the right side to the value on the left.
+  """
   def getPrecedence(self):
+    """ Assignment takes precedence over most things.
+    """
     return Precedence.ASSIGNMENT
 
   def parse(self, parser, left, token):
+    """ Creates a node whose left node is the variable being assigned
+        and whose right node is the value being assigned.
+
+        Arguments:
+          parser (Parser): parser instance
+          left (Node): node to assign value to
+          token (Token): (assignment) operator token
+    """
     right = parser.parseExpression(0)
     return Node(token.getValue(), left, right)
 

@@ -1,18 +1,46 @@
 from parser import Parser
+from tokenizer import Tokenizer
 
 class Configurator:
-  def __init__(self, operator_map, parselet_map):
-    self.operator_map = operator_map
-    self.parselet_map = parselet_map
+  """ Class responsible for creating objects needed by environment.
+      
+      Attributes:
+        config (Configuration): Configuration instance
+  """
+  def __init__(self, configuration):
+    """ Instantiate with a Configuration instance.
+        Arguments:
+          configuration (Configuration): contains operator/parselet/token defs
+    """
+    self.config = configuration
 
-  def makeParser(self):
+  def make_parser(self):
+    """ Creates a Parser instance.
+
+        Override this method to create a Parser of your own.
+    """
     parser = Parser()
-    for tokentype, parselet in self.parselet_map.items():
+    parselet_map = self.config.get_parselet_map()
+    for tokentype, parselet in parselet_map:
       parser.register(tokentype, parselet)
+
     return parser
 
-  def makeOperator(self, value):
-    if value not in self.operator_map:
+  def make_tokenizer(self):
+    """ Creates a Tokenizer instance.
+
+        Override this method to create your own Tokenizer.
+    """
+    tokenizer = Tokenizer(self.config.get_token_defs())
+    return tokenizer
+
+  def make_operator(self, value):
+    """ Creates an Operator based on the given value.
+
+        Attributes:
+           value (str): string token used for operator
+    """
+    if value not in self.config.get_operator_map():
       raise Exception(value + " not recognized as operator")
-    return self.operator_map[value]
+    return self.config.get_operator_map()[value]
 

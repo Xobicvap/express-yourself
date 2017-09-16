@@ -21,7 +21,7 @@ class Operator:
     """ Uses the environment param (envir) to store the result of 
         an operation in the environment variable repository.
 
-        Args:
+        Arguments:
           envir (Environment): environment instance
           result (any): Result of previous operation to be stored in
             environment's variable repository
