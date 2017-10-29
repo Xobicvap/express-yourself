@@ -27,7 +27,7 @@ class Operator:
             environment's variable repository
           name (:obj: `str`, optional): Name of variable to set, if applicable.
     """
-    envir.varRepo().setVar(str(name), result)
+    envir.get_var_repo().set_var(str(name), result)
 
   def evaluate(self, left, right, envir):
     """ Evaluates a node.

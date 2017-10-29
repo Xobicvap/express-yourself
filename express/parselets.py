@@ -40,12 +40,12 @@ class VariableParselet(PrefixParselet):
           parser (Parser): parser instance, not used here
           token (str): token instance
     """
-    return Node(Variable(token.getValue()))
+    return Node(Variable(token.get_value()))
 
 class AssignParselet(InfixParselet):
   """ Assigns the value on the right side to the value on the left.
   """
-  def getPrecedence(self):
+  def get_precedence(self):
     """ Assignment takes precedence over most things.
     """
     return Precedence.ASSIGNMENT
@@ -59,12 +59,20 @@ class AssignParselet(InfixParselet):
           left (Node): node to assign value to
           token (Token): (assignment) operator token
     """
-    right = parser.parseExpression(0)
-    return Node(token.getValue(), left, right)
+    right = parser.parse_expression(0)
+    return Node(token.get_value(), left, right)
 
 class NumericParselet(PrefixParselet):
+  """ Represents a numeric value.
+  """
   def parse(self, parser, token):
-    v = token.getValue()
+    """ Transforms the token value into a node containing a numeric value.
+
+        Arguments:
+          parser (Parser): parser instance, not used here
+          token (str): token instance
+    """
+    v = token.get_value()
     parseutils.validate_numeric(v)
     try:
       return Node(int(v))
@@ -72,57 +80,83 @@ class NumericParselet(PrefixParselet):
       return Node(float(v))
 
 class StringParselet(PrefixParselet):
+  """ Represents a string value.
+  """
   def parse(self, parser, token):
-    v = token.getValue()
+    """ Transforms the token value into a node containing a string value.
+
+        Arguments:
+          parser (Parser): parser instance, not used here
+          token (str): token instance
+    """
+    v = token.get_value()
     parseutils.validate_string(v)
     removed = parseutils.remove_chars(v, "\"")
     return Node(removed)
 
 class SetParselet(PrefixParselet):
+  """ Represents a set. Sets cannot have duplicate values.
+  """
   def parse(self, parser, token):
-    v = token.getValue()
+    """ Transforms the token value into a node containing a set value.
+
+        Arguments:
+          parser (Parser): parser instance, not used here
+          token (str): token instance
+    """
+    v = token.get_value()
     strset = parseutils.set_parse(v)
     return Node(strset)
 
 class MapParselet(PrefixParselet):
+  """ Represents a map (dict in Python parlance)
+  """
   def parse(self, parser, token):
-    v = token.getValue()
+    """ Transforms the token value into a node containing a map value.
+
+        Arguments:
+          parser (Parser): parser instance, not used here
+          token (str): token instance
+    """
+    v = token.get_value()
     strmap = parseutils.map_parse(v)
     return Node(strmap)
 
 class BinaryOperatorParselet(InfixParselet):
+  """ Parselet used for binary operators like + - * / etc.
+  """
   def __init__(self, precedence, isRight):
     self.precedence = precedence
     self.isRight = isRight
 
-  def getPrecedence(self):
+  def get_precedence(self):
     return self.precedence
 
   def parse(self, parser, left, token):
     useRight = 1 if self.isRight else 0
-    right = parser.parseExpression(self.precedence - useRight)
-    return Node(token.getValue(), left, right)
+    right = parser.parse_expression(self.precedence - useRight)
+    return Node(token.get_value(), left, right)
 
 class UnaryPostfixOperatorParselet(PostfixParselet):
   def __init__(self, precedence):
     self.precedence = precedence
 
-  def getPrecedence(self):
+  def get_precedence(self):
     return self.precedence
 
   def parse(self, parser, left, token):
-    return Node(token.getValue(), left)
+    return Node(token.get_value(), left)
 
 class UnaryPrefixOperatorParselet(PrefixParselet):
   def __init__(self, precedence):
     self.precedence = precedence
 
-  def getPrecedence(self):
+  def get_precedence(self):
     return self.precedence
 
   def parse(self, parser, token):
-    left = parser.parseExpression(self.precedence)
-    return Node(token.getValue, left)
+    left = parser.parse_expression(self.precedence)
+    return Node(token.get_value(), left)
 
 
 

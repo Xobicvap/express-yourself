@@ -4,10 +4,10 @@ class Token:
     self.tokentype = tokentype
     self.value = value
 
-  def getType(self):
+  def get_type(self):
     return self.tokentype
 
-  def getValue(self):
+  def get_value(self):
     return self.value
 
   def __str__(self):

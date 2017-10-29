@@ -23,7 +23,7 @@ class Node:
           envir (Environment): Environment instance
     """
     if hasattr(self.value, 'value'):
-      return envir.varRepo().repo[self.value.value]
+      return envir.get_var_repo().repo[self.value.value]
     return self.value
 
   def evaluate(self, envir):
@@ -32,7 +32,7 @@ class Node:
           envir (Environment): container for parser and tools etc
     """
     if self.left is not None or self.right is not None:
-      return envir.make_operator(self.value).evaluate(self.left, self.right, envir)
+      return envir.operator(self.value).evaluate(self.left, self.right, envir)
     else:
       return self.get_value(envir)
 

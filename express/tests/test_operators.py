@@ -7,7 +7,7 @@ class TestEnv:
   def __init__(self, var_repo = None):
     self.var_repo = var_repo or VarRepo()
 
-  def varRepo(self):
+  def get_var_repo(self):
     return self.var_repo
     
 
@@ -20,7 +20,7 @@ class OperatorTest(unittest.TestCase):
     ao = AssignOperator()
     te = TestEnv()
     ao.evaluate(n1, n2, te)
-    vr = te.varRepo()
+    vr = te.get_var_repo()
     self.assertEqual({"A": 1}, vr.repo)
 
   def testAddOperatorEvaluate(self):
@@ -30,7 +30,7 @@ class OperatorTest(unittest.TestCase):
     ao = AddOperator()
     te = TestEnv()
     result = ao.evaluate(n1, n2, te)
-    vr = te.varRepo()
+    vr = te.get_var_repo()
 
     self.assertEqual(2, result)
     self.assertEqual({"_last": 2}, vr.repo)
@@ -41,7 +41,7 @@ class OperatorTest(unittest.TestCase):
     ao = SubtractOperator()
     te = TestEnv()
     result = ao.evaluate(n1, n1, te)
-    vr = te.varRepo()
+    vr = te.get_var_repo()
 
     self.assertEqual(0, result)
     self.assertEqual({"_last": 0}, vr.repo)
@@ -53,7 +53,7 @@ class OperatorTest(unittest.TestCase):
     ao = MultiplyOperator()
     te = TestEnv()
     result = ao.evaluate(n1, n2, te)
-    vr = te.varRepo()
+    vr = te.get_var_repo()
 
     self.assertEqual(4, result)
     self.assertEqual({"_last": 4}, vr.repo)
@@ -65,7 +65,7 @@ class OperatorTest(unittest.TestCase):
     ao = DivisionOperator()
     te = TestEnv()
     result = ao.evaluate(n1, n2, te)
-    vr = te.varRepo()
+    vr = te.get_var_repo()
 
     self.assertEqual(2, result)
     self.assertEqual({"_last": 2}, vr.repo)

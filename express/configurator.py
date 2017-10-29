@@ -21,7 +21,7 @@ class Configurator:
     """
     parser = Parser()
     parselet_map = self.config.get_parselet_map()
-    for tokentype, parselet in parselet_map:
+    for tokentype, parselet in parselet_map.iteritems():
       parser.register(tokentype, parselet)
 
     return parser

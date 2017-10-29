@@ -23,7 +23,7 @@ class Environment:
     """
     if not config_kwargs:
       config_kwargs = {}
-    self.configurator = ConfigLoader(**config_kwargs).load()
+    self.configurator = Configurator(ConfigLoader(**config_kwargs).load())
     self.var_repo = VarRepo()
     self.parser_instance = None
     self.tokenizer = None
